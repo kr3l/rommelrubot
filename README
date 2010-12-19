@@ -1,0 +1,5 @@
+pinguino/
+	contains the code to be loaded on the Pinguino. See http://www.hackinglab.org/ for more information on pinguino.
+
+ruby/
+	contains the Ruby script that connects to the Pinguino. 
