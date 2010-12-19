@@ -45,24 +45,14 @@ C2 = PIC pin17 = pinguino pin 12 (PWM)	-> naar driver 3 (4 op connector)
 
  
 int i;
-int caractere;
-unsigned int j;
 unsigned int dist1;
 unsigned int dist2;
 
-int cnt = 0;
-
-int incomingByte = 'C';	// for incoming serial data
 char stringbuffer[20];	//buffer for reading one line of the serial input
 int bufferpos = 0;
 int motor1 = 0;
 int motor2 = 0;
 
-//servo
-uchar servoAngle 			= 90;	//[0,180]
-
-
-int testval = 0;
 
 //servo
 void setServoAngle(uchar pin,uchar angle) {	//set new servo value (called from external code)
@@ -147,14 +137,6 @@ void loop() {
 		stringbuffer[bufferpos] = Serial.read();
 		if (stringbuffer[bufferpos] == '\n') {	//end of the line, interpret the command
 			stringbuffer[bufferpos+1] = '\0';	//write end-of-string char
-			//stringbuffer[bufferpos+2] = '\0';
-			//Serial.print("I got ");
-			//j = 0;
-			//while (stringbuffer[j] != '\0') {
-				//Serial.print(stringbuffer[j],BYTE);
-
-			//	j++;
-			//}
 
 			//Serial.print('\0');
 			if (strcmp(stringbuffer,"PING\n") == 0) {
@@ -168,8 +150,6 @@ void loop() {
 			} else if (strcmp(stringbuffer,"GET_SENSORS\n") == 0) {
 				dist1=analogRead(13);
 				dist2 = analogRead(14);
-				
-				testval = TMR1H*255 + TMR1L;
 				Serial.print("A,");
 				Serial.print(dist1,DEC);
 				Serial.print(",");
@@ -182,15 +162,6 @@ void loop() {
 				motor1 = atoi(strtok(NULL, ",\n"));		//points to val1
 				motor2 = atoi(strtok(NULL, ",\n"));		//points to val2
 				
-				/*
-				if (motor1 == 0) {
-					setSteer('A');
-				} else if (motor1 == -1) {
-					setSteer('L');
-				} else if (motor1 == 1) {
-					setSteer('R');
-				}
-				*/
 				setServoAngle( 2 , motor1);
 				
 				if (motor2 == 0) {
@@ -207,18 +178,6 @@ void loop() {
 		} else {
 			bufferpos++;
 		}
-		//Serial.print("I got..");
-		//Serial.print(incomingByte);
-		
-		  //LEDs
-		//  for (i=21; i <= 28; i++) {
-		//	pinMode(i,OUTPUT);
-		//	digitalWrite(i,LOW);
-		//  }
-	
-
-
-		cnt = 0;
 	}
 
 }
