@@ -17,12 +17,12 @@ protocol to send sensor values and receive motor values. Hardware overview:
 			dist sensor		|_||_|
 			dist sensor 2	|_||_|
 								|_||_|
+								|_||_|		
+								|_||_|		
+								|_||_|		
 								|_||_|
 								|_||_|
-								|_||_|
-								|_||_|
-								|_||_|
-								|_||_|
+servo2 = ping_20, PIC_10|_||_|
 								|_||_|
 								|_||_|
 								|_||_|
@@ -91,6 +91,11 @@ void setup() {
 	
 	servo.attach(2);			//initialize servo on pin2 (PIC pin 35, RB2)
 	setServoAngle(2,90);	//set the servo in the mid-position (90°)
+	
+	//second servo for rotating the distance sensor
+	pinMode(20,OUTPUT);
+	servo.attach(20);			//initialize servo on pin2 (PIC pin 35, RB2)
+	setServoAngle(20,90);	//set the servo in the mid-position (90°)
 }
 
 void setDrive(int val) {
@@ -118,6 +123,12 @@ void setSteer(int val) {
 
 void loop() {
 	delay(3);
+	
+	//if (servo.read(20) > 240) {
+	//	servo.setMinimumPulse(20);
+	//} else {
+		servo.setMaximumPulse(20);
+	//}
 	
 	// send data only when you receive data:
 	if (Serial.available()) {
