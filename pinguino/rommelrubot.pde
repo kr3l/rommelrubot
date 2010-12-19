@@ -36,7 +36,7 @@ B3 = PIC pin36 = pinguino pin 3			-> naar driver 1 (1 op connector)
 C1 = PIC pin16 = pinguino pin 11 (PWM)	-> naar driver 2 (3 op connector)
 C2 = PIC pin17 = pinguino pin 12 (PWM)	-> naar driver 3 (4 op connector)
 
-
+2010 - Karel Braeckman - http://kr3l.wordpress.com/tag/rommelrubot/
 */
 
 #define PIC18F4550
@@ -62,37 +62,35 @@ void setServoAngle(uchar pin,uchar angle) {	//set new servo value (called from e
 }
 
 void setup() {
-  //INTCON2bits.RBPU = 0;	// Enable pullups on portb
+	//LEDs
+	for (i=21; i <= 28; i++) {
+		pinMode(i,OUTPUT);
+		digitalWrite(i,HIGH);
+	}
 
-  //LEDs
-  for (i=21; i <= 28; i++) {
-	pinMode(i,OUTPUT);
-	digitalWrite(i,HIGH);
-  }
+	TRISBbits.TRISB0 = 1;	// portb buttons = inputs
+	TRISBbits.TRISB1 = 0;
+	TRISBbits.TRISB4 = 1;
+	TRISBbits.TRISB5 = 1;
+	TRISBbits.TRISB6 = 1;
+	TRISBbits.TRISB7 = 1;
+	TRISBbits.TRISB2 = 0;	//portb pwm = outputs
+	TRISBbits.TRISB3 = 0;
 
-TRISBbits.TRISB0 = 1;	// portb buttons = inputs
-TRISBbits.TRISB1 = 0;
-TRISBbits.TRISB4 = 1;
-TRISBbits.TRISB5 = 1;
-TRISBbits.TRISB6 = 1;
-TRISBbits.TRISB7 = 1;
-TRISBbits.TRISB2 = 0;	//portb pwm = outputs
-TRISBbits.TRISB3 = 0;
-
-  //Motor pins  
-  for (i=2; i <= 3; i++) {
-	pinMode(i,OUTPUT);
-	digitalWrite(i,LOW);
-  }
-  for (i=11; i <= 12; i++) {
-	pinMode(i,OUTPUT);
-	digitalWrite(i,LOW);
-  }  
+	//Motor pins  
+	for (i=2; i <= 3; i++) {
+		pinMode(i,OUTPUT);
+		digitalWrite(i,LOW);
+	}
+	for (i=11; i <= 12; i++) {
+		pinMode(i,OUTPUT);
+		digitalWrite(i,LOW);
+	}  
    
-    Serial.begin(57600);
-    servo.attach(2);			//initialize servo on pin2 (PIC pin 35, RB2)
-    setServoAngle(2,90);	//set the servo in the mid-position (90°)
-
+	Serial.begin(57600);
+	
+	servo.attach(2);			//initialize servo on pin2 (PIC pin 35, RB2)
+	setServoAngle(2,90);	//set the servo in the mid-position (90°)
 }
 
 void setDrive(int val) {
@@ -110,23 +108,13 @@ void setDrive(int val) {
 
 void setSteer(int val) {
 	if (val == 'R') {	//RIGHT
-		//digitalWrite(2,LOW);
-		//digitalWrite(12,HIGH);
 		setServoAngle( 2 , 180);
 	} else if (val == 'L') { //LEFT
-		//digitalWrite(2,HIGH);
-		//digitalWrite(12,LOW);
 		setServoAngle( 2 , 0);
 	} else {	//STOP
-		//digitalWrite(2,LOW);
-		//digitalWrite(12,LOW);
 		setServoAngle( 2 , 90);
 	}
 }
-
-
-
-
 
 void loop() {
 	delay(3);
@@ -179,6 +167,4 @@ void loop() {
 			bufferpos++;
 		}
 	}
-
 }
-
