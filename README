@@ -3,3 +3,7 @@ pinguino/
 
 ruby/
 	contains the Ruby script that connects to the Pinguino. 
+
+android/
+	contains code for Android phones that can connect to the pinguino device. An interface with buttons allows you to 
+	steer the robot.
