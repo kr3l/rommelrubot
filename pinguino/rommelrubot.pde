@@ -1,37 +1,47 @@
-//Write Distance Sensor value to serial port. 
-//Distance sensor connected on AN0 (Pinguino pin 13, PIC pin 2)
 /*
-						 _  _
-				gnd		|_||_|		vcc (5V)
-			dist sensor	|_||_|
+This code runs on the Pinguino Microcontroller. It requires the Pinguino bootloader 
+to be installed on your device, see http://www.hackinglab.org/ for details on the 
+Pinguino project.
+
+This code will set up a connection to the serial port and communicate via a simple
+protocol to send sensor values and receive motor values. Hardware overview:
+
+* a servo motor as steering device (ackerman drive)
+* a simple DC motor as driving motor
+* some distance sensors
+* a BlueSMIRF Bluetooth modem to send the serial data via Bluetooth to the connecting device (e.g., laptop or Android Phone)
+* a Dwengo board is used as Pinguino (see http://www.dwengo.org/products/dwengo-starters-kit for more info on Dwengo)
+
+								_  _
+				gnd			|_||_|		vcc (5V)
+			dist sensor		|_||_|
 			dist sensor 2	|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-						|_||_|
-				to RX	|_||_|
-				to TX 	|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+								|_||_|
+				to RX			|_||_|
+				to TX 		|_||_|
 				
-B2 = pin35 = pinguino pin 2 			-> naar driver 4 (2 op connector)
-B3 = pin36 = pinguino pin 3			-> naar driver 1 (1 op connector)
-C1 = pin16 = pinguino pin 11 (PWM)	-> naar driver 2 (3 op connector)
-C2 = pin17 = pinguino pin 12 (PWM)	-> naar driver 3 (4 op connector)
+B2 = PIC pin35 = pinguino pin 2 			-> naar driver 4 (2 op connector)
+B3 = PIC pin36 = pinguino pin 3			-> naar driver 1 (1 op connector)
+C1 = PIC pin16 = pinguino pin 11 (PWM)	-> naar driver 2 (3 op connector)
+C2 = PIC pin17 = pinguino pin 12 (PWM)	-> naar driver 3 (4 op connector)
 
 
 */
 
 #define PIC18F4550
-
- #include <string.h>
- #include <stdlib.h>
+#include <string.h>
+#include <stdlib.h>
 
  
 int i;
